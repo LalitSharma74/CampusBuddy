@@ -9,6 +9,7 @@ import { FIREBASE_ERRORS } from "@/src/firebase/errors";
 const SignUp: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [signUpForm, setSignUpForm] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
