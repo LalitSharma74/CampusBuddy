@@ -1,3 +1,4 @@
+import { auth, firestore } from "@/src/firebase/clientApp";
 import {
   Button,
   Modal,
@@ -16,10 +17,13 @@ import {
   Divider,
   Icon,
 } from "@chakra-ui/react";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import error from "next/error";
 
 import React, { useState } from "react";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type CreateCommunityModalProps = {
   open: boolean;
@@ -30,17 +34,16 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   open,
   handleClose,
 }) => {
+  const [user] = useAuthState(auth);
   const [communityName, setCommunityName] = useState("");
   const [charsRemaining, setCharsRemaining] = useState(21);
   const [communityType, setCommunityType] = useState("public");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // if charslenght>21 then donot set community name
     if (event.target.value.length > 21) return;
-
     setCommunityName(event.target.value);
-
-    //Recalculate how much chars we are left in naming a community
     setCharsRemaining(21 - event.target.value.length);
   };
 
@@ -50,6 +53,51 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setCommunityType(event.target.name);
+  };
+
+  const handleCreateCommunity = async () => {
+    // Validating the community name
+    const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/; // check for valid string characters
+
+    if (format.test(communityName) || communityName.length < 3) {
+      setError(
+        "Community names must be 3-21 characters and can only contains letters , numbers, or underscores"
+      );
+      return; // if any error return from the function
+    }
+
+    setLoading(true);
+    //📌 If valid community name we will create the community document in firestore
+    // After validation has been done component gonna communicate with firebase so we will setLoading to true
+
+    //& Now we have valid and unique community name ,now we can create the community
+
+    try {
+      const communityDocRef = doc(firestore, "communities", communityName);
+
+      // check if community exists in DB
+      const communityDoc = await getDoc(communityDocRef); // getting actual document
+
+      if (communityDoc.exists()) {
+        throw new Error(
+          `Sorry , r/${communityName} is already taken. Try Another!`
+        );
+      }
+      //Creating the community
+      await setDoc(communityDocRef, {
+        creatorId: user?.uid,
+        createdAt: serverTimestamp(),
+        numberOfMembers: 1,
+        privacyType: "communityType",
+      });
+
+      setLoading(false);
+    } catch (error: any) {
+      console.log("Handle create community error ", error);
+      setError(error.message);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -93,11 +141,18 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                 onChange={handleChange}
               />
               {/* Need to make characters length dynamic  */}
-              <Text
-                fontSize="9pt"
-                color={charsRemaining === 0 ? "red" : "gray:300"}
-              >
-                {charsRemaining} characters remaining
+
+              {communityName && (
+                <Text
+                  fontSize="9pt"
+                  color={charsRemaining === 0 ? "red" : "gray:300"}
+                >
+                  {charsRemaining} characters remaining
+                </Text>
+              )}
+
+              <Text fontSize="9pt" color="red" pt={1}>
+                {error}
               </Text>
               <Box mt={4} mb={4}>
                 <Text fontWeight={600} fontSize={15}>
@@ -168,7 +223,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
             >
               Close
             </Button>
-            <Button height="30px" onClick={() => {}}>
+            <Button
+              height="30px"
+              onClick={handleCreateCommunity}
+              isLoading={loading}
+            >
               Create Community
             </Button>
           </ModalFooter>
@@ -177,6 +236,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     </>
   );
 };
+
 export default CreateCommunityModal;
 
 // CreateCommunity modal will have all of the logic necessary to create a community : ->  COMPONENT INTERACT WITH fireStore database --firestore documents -----> database transactions and batch Writes
