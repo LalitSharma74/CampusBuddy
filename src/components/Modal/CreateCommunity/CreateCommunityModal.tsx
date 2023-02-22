@@ -17,7 +17,13 @@ import {
   Divider,
   Icon,
 } from "@chakra-ui/react";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import error from "next/error";
 
 import React, { useState } from "react";
@@ -76,23 +82,42 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     try {
       const communityDocRef = doc(firestore, "communities", communityName);
 
-      // check if community exists in DB
-      const communityDoc = await getDoc(communityDocRef); // getting actual document
+      // Here is how we implement transactions in firebase
+      await runTransaction(firestore, async (transaction) => {
+        // check if community exists in DB
+        const communityDoc = await transaction.get(communityDocRef); // getting actual document
 
-      if (communityDoc.exists()) {
-        throw new Error(
-          `Sorry , r/${communityName} is already taken. Try Another!`
+        if (communityDoc.exists()) {
+          throw new Error(
+            `Sorry , r/${communityName} is already taken. Try Another!`
+          );
+        }
+        transaction.set(communityDocRef, {
+          creatorId: user?.uid,
+          createdAt: serverTimestamp(),
+          numberOfMembers: 1,
+          privacyType: "communityType",
+        });
+
+        //Creating the community :->
+        // When user creates a community we are doing two major operations
+
+        // 1. We are actually creating the community itself in the community collection
+        // 2. We are going to add that community to the userCommunity snippets
+        //! Both of the operations should succeed or none of them
+
+        //  So we dont want to create the community to the userCommunity snippets if the community fails to be created so transactions are extremely useful here
+
+        // Create communitySnippet on    //
+
+        transaction.set(
+          doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+          {
+            communityId: communityName,
+            isModerator: true,
+          }
         );
-      }
-      //Creating the community
-      await setDoc(communityDocRef, {
-        creatorId: user?.uid,
-        createdAt: serverTimestamp(),
-        numberOfMembers: 1,
-        privacyType: "communityType",
       });
-
-      setLoading(false);
     } catch (error: any) {
       console.log("Handle create community error ", error);
       setError(error.message);
@@ -253,4 +278,7 @@ export default CreateCommunityModal;
 
 // The relationship between users and communities is the community and number of users so evertime a user leaves or join the community we just update the number of members in the community
 
-// In the  firebase authentication is completely separated from firestore database
+// In the  firebase authentication is completely separated from firestore database so we need to somehow store user in firestore database therefore for that we need to implement cloud function and we need to write a single function that gonna listen to our authentication service and firestore database
+
+// How do transactions works reference?
+// https://youtu.be/dOVSr0OsAoU
