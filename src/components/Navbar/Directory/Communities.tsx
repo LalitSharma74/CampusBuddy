@@ -7,6 +7,7 @@ type CommunitiesProps = {};
 
 const Communities: React.FC<CommunitiesProps> = () => {
   const [open, setOpen] = useState(false);
+  
   return (
     <>
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />

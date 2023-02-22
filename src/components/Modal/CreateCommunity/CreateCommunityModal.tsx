@@ -56,6 +56,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   };
 
   const handleCreateCommunity = async () => {
+    if (error) setError("");
     // Validating the community name
     const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/; // check for valid string characters
 
@@ -67,8 +68,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     }
 
     setLoading(true);
-    //📌 If valid community name we will create the community document in firestore
-    // After validation has been done component gonna communicate with firebase so we will setLoading to true
+    //📌 If valid community name we,will create the community document in firestore
+    // After validation has been done,component gonna communicate with firebase so we will set Loading to true
 
     //& Now we have valid and unique community name ,now we can create the community
 
@@ -240,3 +241,16 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 export default CreateCommunityModal;
 
 // CreateCommunity modal will have all of the logic necessary to create a community : ->  COMPONENT INTERACT WITH fireStore database --firestore documents -----> database transactions and batch Writes
+
+//TODO: Now we need to care about people joining in Community
+//TODO: Therefore we need to care about modelling data in noSQL database
+
+//? How we gonna modal this data IN NOSQL DATABASE
+
+// What actually happens when the user joins the community from the data stand point
+
+// Relationship between a user and a community: User can be a part of many communities and a user can have many communities so MANY TO MANY RELATIONSHIP
+
+// The relationship between users and communities is the community and number of users so evertime a user leaves or join the community we just update the number of members in the community
+
+// In the  firebase authentication is completely separated from firestore database

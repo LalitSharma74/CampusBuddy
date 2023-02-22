@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
       <Flex
         alignItems="center"
         width={{ base: "40px", md: "auto" }}
-        mr={{ base: 0, md: 2 }}
+        mr={{ base: 0, md: 2  }}
       >
         <Image src="/images/redditFace.svg" height="30px" alt="" />
         <Image

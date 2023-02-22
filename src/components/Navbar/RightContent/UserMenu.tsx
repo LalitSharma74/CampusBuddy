@@ -66,7 +66,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                   </Text>
                   <Flex alignItems="center">
                     <Icon as={IoSparkles} color="brand.100" mr={1} />
-                    {/* Will add custom properties to user object when cloud functions of firebase will be used later because firebase donot allow to change properties of user's oject*/}
+                    {/* Will add custom properties to user object when cloud functions of firebase will be used later because firebase donot allow changing properties of user's oject*/}
                     <Text color="gray.400">1 karma</Text>{" "}
                   </Flex>
                 </Box>

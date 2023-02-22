@@ -68,7 +68,7 @@ const AuthModal: React.FC = () => {
                   <AuthInputs />
                 </>
               ) : (
-                <ResetPassword />
+                <ResetPassword  />
               )}
             </Flex>
           </ModalBody>

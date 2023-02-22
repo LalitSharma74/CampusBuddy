@@ -16,7 +16,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
           children={<SearchIcon color="gray.400" mb={1} />}
         />
         <Input
-          placeholder="Search Reddit"
+          placeholder="Search Reddit"  
           fontSize="10pt"
           _placeholder={{ color: "gray.500" }}
           _hover={{

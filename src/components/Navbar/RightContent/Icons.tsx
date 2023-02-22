@@ -16,7 +16,7 @@ const ActionIcons: React.FC<ActionIconsProps> = () => {
   //   const { toggleMenuOpen } = useDirectory();
   return (
     <Flex alignItems="center" flexGrow={1}>
-      {/* Left icons */}
+      {/* Left side icons */}
       <Box
         display={{ base: "none", md: "flex" }}
         alignItems="center"

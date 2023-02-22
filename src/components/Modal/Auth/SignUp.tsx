@@ -1,10 +1,13 @@
 import { authModalState } from "@/src/atoms/authModalAtom";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/src/firebase/clientApp";
+import { auth, firestore } from "@/src/firebase/clientApp";
 import { FIREBASE_ERRORS } from "@/src/firebase/errors";
+import { createUserDocument } from "../../../../functions/src/index";
+import { addDoc, collection } from "firebase/firestore";
+import { User } from "firebase/auth";
 
 const SignUp: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -16,8 +19,10 @@ const SignUp: React.FC = () => {
   });
 
   const [error, setError] = useState("");
-  const [createUserWithEmailAndPassword, user, loading, userError] =
+  const [createUserWithEmailAndPassword, userCred, loading, userError] =
     useCreateUserWithEmailAndPassword(auth);
+
+  // console.log(userCred);
 
   //   Firebase Logic
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +36,7 @@ const SignUp: React.FC = () => {
       setError("Passwords donot match");
       return;
     }
-    //password match
+    //password match , THIS FUNCTION WILL NOT RETURN NEWLY CREATED USER
     createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
   };
 
@@ -42,6 +47,22 @@ const SignUp: React.FC = () => {
       [event.target.name]: event.target.value,
     }));
   };
+
+  // Creating user without cloud functions
+  const createUserDocument = async (user: User) => {
+    // writing the user to our database without the cloud functions
+
+    await addDoc(
+      collection(firestore, "users"),
+      JSON.parse(JSON.stringify(user))
+    );
+  };
+
+  useEffect(() => {
+    if (userCred) {
+      createUserDocument(userCred.user);
+    }
+  }, [userCred]);
 
   return (
     <form onSubmit={onSubmit}>
