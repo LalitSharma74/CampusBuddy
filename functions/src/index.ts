@@ -1,3 +1,5 @@
+// Creating cloud functions that relate user with the database and store users as a user table
+
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 

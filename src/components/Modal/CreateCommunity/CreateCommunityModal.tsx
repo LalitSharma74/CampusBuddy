@@ -24,6 +24,9 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore";
+
+// Transactions: a transaction is a set of read and write operations on one or more documents.
+// Batched Writes: a batched write is a set of write operations on one or more documents.
 import error from "next/error";
 
 import React, { useState } from "react";

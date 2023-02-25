@@ -23,13 +23,23 @@ import { auth } from "@/src/firebase/clientApp";
 import { authModalState } from "@/src/atoms/authModalAtom";
 import { useSetRecoilState } from "recoil";
 import { IoSparkles } from "react-icons/io5";
+import { communityState } from "../../../atoms/communitiesAtom";
 
 type UserMenuProps = {
   user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+  // As the user has logged out we dont want any communityData related to this user for that we will use resetRecoilState hook
+
+  const resetCommunityState = useSetRecoilState(communityState);
   const setAuthModalState = useSetRecoilState(authModalState);
+
+  const logout = async () => {
+    await signOut(auth);
+    //clear Community State
+    resetCommunityState();
+  };
 
   return (
     <Menu>
@@ -97,7 +107,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               fontSize="10pt"
               fontWeight={700}
               _hover={{ bg: "blue.300", color: "white" }}
-              onClick={() => signOut(auth)}
+              onClick={logout}
             >
               <Flex align="center">
                 <Icon fontSize={20} mr={2} as={MdOutlineLogin} />
