@@ -9,6 +9,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
 import React from "react";
 import safeJsonStringify from "safe-json-stringify";
+import CreatePostLink from "../../../components/Community/CreatePostLink";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -26,20 +27,12 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
       <PageContent>
         {/* child1 on the left */}
         <>
-          <div>LHS</div>
-          <div>HELLO</div>
-          <div>HELLO</div>
-          <div>HELLO</div>
-          <div>HELLO</div>
+          <CreatePostLink />
         </>
 
         {/* child2 on the right*/}
         <>
-          <div>RHS</div>
-          <div>HELLO</div>
-          <div>HELLO</div>
-          <div>HELLO</div>
-          <div>HELLO</div>
+          <div>Right Content</div>
         </>
       </PageContent>
     </>

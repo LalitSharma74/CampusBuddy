@@ -32,7 +32,7 @@ export const communityState = atom<communityState>({
   default: defaultCommunityState,
 });
 
-// In react when we need data as well as functionality shared across global components we can create what called as custom hooks and we can put state and logic that is repeated across our app and we can use this custom hook an any component that requires this repeated functionality
+// In react when we need data as well as functionality shared across global components we can create what called as custom hooks and we can put state and   logic that is repeated across our app and we can use this custom hook an any component that requires this repeated functionality
 
 // Custom hook : useCommunityData: --> Having functionality of joining and leaving across two different components we can keep our communitySnippet inside our useCommunityData hook
 
