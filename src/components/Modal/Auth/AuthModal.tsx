@@ -23,6 +23,7 @@ import ResetPassword from "./ResetPassword";
 const AuthModal: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
   const [user, loading, error] = useAuthState(auth);
+  // loading: A boolean to indicate whether the authentication state is still being loaded
 
   const handleClose = () => {
     setModalState((prev) => ({

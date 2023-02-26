@@ -1,4 +1,4 @@
-import { Flex, Image } from "@chakra-ui/react";
+import { Flex, Image, Link } from "@chakra-ui/react";
 import React from "react";
 import RightContent from "./RightContent/RightContent";
 import SearchInput from "./SearchInput";
@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
       <Flex
         alignItems="center"
         width={{ base: "40px", md: "auto" }}
-        mr={{ base: 0, md: 2  }}
+        mr={{ base: 0, md: 2 }}
       >
         <Image src="/images/redditFace.svg" height="30px" alt="" />
         <Image
@@ -28,6 +28,7 @@ const Navbar: React.FC = () => {
           alt=""
         />
       </Flex>
+
       {user && <Directory />}
       <SearchInput user={user} />
       <RightContent user={user} />
