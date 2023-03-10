@@ -1,21 +1,22 @@
 import {
+  Community,
+  CommunitySnippet,
+  communityState,
+} from "../atoms/communitiesAtom";
+import React, { useEffect, useState } from "react";
+import { auth, firestore } from "../firebase/clientApp";
+import {
   collection,
   doc,
   getDocs,
   increment,
   writeBatch,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { call } from "safe-json-stringify";
+
 import { authModalState } from "../atoms/authModalAtom";
-import {
-  Community,
-  CommunitySnippet,
-  communityState,
-} from "../atoms/communitiesAtom";
-import { auth, firestore } from "../firebase/clientApp";
+import { call } from "safe-json-stringify";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const useCommunityData = () => {
   const [user] = useAuthState(auth);

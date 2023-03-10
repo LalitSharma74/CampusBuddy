@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
-import react from "react";
 import { atom } from "recoil";
+import react from "react";
 
 export interface Community {
   id: string;
@@ -8,7 +8,7 @@ export interface Community {
   numberOfMembers: number;
   privacyType: "public" | "restricted" | "private";
   createdAt?: Timestamp;
-  imageUrl?: string;
+  imageURL?: string;
 }
 
 export interface CommunitySnippet {

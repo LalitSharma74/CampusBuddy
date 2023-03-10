@@ -1,22 +1,24 @@
+import { doc, getDoc } from "firebase/firestore";
+
 // Index/Home route of Community Page
 // We can access this index route by going to localhost 3000/r/someCommunityName
 import { Community } from "@/src/atoms/communitiesAtom";
 import CommunityNotFound from "@/src/components/Community/CommunityNotFound";
+import CreatePostLink from "../../../components/Community/CreatePostLink";
+import { GetServerSidePropsContext } from "next";
 import Header from "@/src/components/Community/Header";
 import PageContent from "@/src/components/Layout/PageContent";
-import { firestore } from "@/src/firebase/clientApp";
-import { doc, getDoc } from "firebase/firestore";
-import { GetServerSidePropsContext } from "next";
+import Posts from "@/src/components/Posts/Posts";
 import React from "react";
+import { firestore } from "@/src/firebase/clientApp";
 import safeJsonStringify from "safe-json-stringify";
-import CreatePostLink from "../../../components/Community/CreatePostLink";
 
 type CommunityPageProps = {
   communityData: Community;
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
-  console.log("Here is the data", communityData);
+  // console.log("Here is the data", communityData);
 
   if (!communityData) {
     return <CommunityNotFound />;
@@ -28,11 +30,13 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
         {/* child1 on the left */}
         <>
           <CreatePostLink />
+          <Posts communityData={communityData} />
         </>
 
-        {/* child2 on the right*/}
+        {/* child2 on the right */}
+
         <>
-          <div>Right Content</div>
+          <div> Right content</div>
         </>
       </PageContent>
     </>

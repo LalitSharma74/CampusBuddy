@@ -1,22 +1,24 @@
-import { auth, firestore } from "@/src/firebase/clientApp";
 import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Box,
-  Input,
-  Stack,
+  Button,
   Checkbox,
-  Text,
-  Flex,
   Divider,
+  Flex,
   Icon,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
+import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
+import React, { useState } from "react";
+import { auth, firestore } from "@/src/firebase/clientApp";
 import {
   doc,
   getDoc,
@@ -25,13 +27,10 @@ import {
   setDoc,
 } from "firebase/firestore";
 
+import { HiLockClosed } from "react-icons/hi";
 // Transactions: a transaction is a set of read and write operations on one or more documents.
 // Batched Writes: a batched write is a set of write operations on one or more documents.
 import error from "next/error";
-
-import React, { useState } from "react";
-import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
-import { HiLockClosed } from "react-icons/hi";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 type CreateCommunityModalProps = {
@@ -140,7 +139,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
             fontSize={15}
             padding={3}
           >
-            Create a Community
+            Create a Clique
           </ModalHeader>
           <Divider />
 
@@ -185,7 +184,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               </Text>
               <Box mt={4} mb={4}>
                 <Text fontWeight={600} fontSize={15}>
-                  Community type
+                  Clique type
                 </Text>
 
                 {/* {checkbox} */}
@@ -257,7 +256,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               onClick={handleCreateCommunity}
               isLoading={loading}
             >
-              Create Community
+              Create Clique
             </Button>
           </ModalFooter>
         </ModalContent>

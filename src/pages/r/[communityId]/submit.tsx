@@ -5,14 +5,18 @@
 // 1 . Post form
 // 2 . About Community
 
-import PageContent from "@/src/components/Layout/PageContent";
 import { Box, Text } from "@chakra-ui/react";
-import React from "react";
+
 import NewPostForm from "../../../components/Posts/NewPostForm";
+import PageContent from "@/src/components/Layout/PageContent";
+import React from "react";
+import { auth } from "@/src/firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type submitProps = {};
 
 const submit: React.FC<submitProps> = () => {
+  const [user] = useAuthState(auth);
   return (
     <PageContent>
       <>
@@ -22,7 +26,7 @@ const submit: React.FC<submitProps> = () => {
 
         {/* New Post Form */}
 
-        <NewPostForm />
+        {user && <NewPostForm user={user} />}
       </>
       <>{/* About */}</>
     </PageContent>

@@ -1,10 +1,11 @@
 import { Flex, Image, Link } from "@chakra-ui/react";
+
+import Directory from "./Directory/Directory";
 import React from "react";
 import RightContent from "./RightContent/RightContent";
 import SearchInput from "./SearchInput";
 import { auth } from "@/src/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Directory from "./Directory/Directory";
 
 const Navbar: React.FC = () => {
   const [user, loading, error] = useAuthState(auth); // we will use this hook a lot
@@ -20,10 +21,10 @@ const Navbar: React.FC = () => {
         width={{ base: "40px", md: "auto" }}
         mr={{ base: 0, md: 2 }}
       >
-        <Image src="/images/redditFace.svg" height="30px" alt="" />
+        {/* <Image src="/images/redditFace.svg" height="30px" alt="" /> */}
         <Image
-          src="/images/redditText.svg"
-          height="40px"
+          src="vercel.svg"
+          height="20px"
           display={{ base: "none", md: "unset" }}
           alt=""
         />

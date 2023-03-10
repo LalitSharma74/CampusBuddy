@@ -1,6 +1,12 @@
-import { Flex, Input, Stack, Textarea, Button } from "@chakra-ui/react";
-import { title } from "process";
-import React from "react";
+import { Button, Flex, Input, Stack, Textarea } from "@chakra-ui/react";
+import React, { useRef } from "react";
+
+import DraftEditor from "./DraftEditor";
+import { Editor } from "@tinymce/tinymce-react";
+
+// import ReactMarkdown from "react-markdown";
+// import gfm from "remark-gfm";
+// import { Editor } from "@tinymce/tinymce-react";
 
 type TextInputsProps = {
   textInputs: {
@@ -41,13 +47,16 @@ const TextInputs: React.FC<TextInputsProps> = ({
           borderColor: "black",
         }}
       />
+
+      {/* importing draft editor */}
+      {/* <DraftEditor /> */}
+
       <Textarea
         name="body" // name are required in onChange function
         value={textInputs.body}
         fontSize="10pt"
         pl="22px"
         borderRadius={4}
-        // onChange={} // will come from props created in NewPostForm
         height="100px"
         onChange={onChange}
         placeholder="Text (optional)"
@@ -60,6 +69,7 @@ const TextInputs: React.FC<TextInputsProps> = ({
           borderColor: "black",
         }}
       />
+
       <Flex justify="flex-end">
         <Button
           height="34px"
